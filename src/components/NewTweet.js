@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { handleAddTweet } from '../actions/tweets'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 class NewTweet extends Component {
 	state = {
 		text: '',
+		toHome: false,
 	}
 	handleChange = (e) => {
 		const text = e.target.value
@@ -22,13 +24,17 @@ class NewTweet extends Component {
 		dispatch(handleAddTweet(text, id))
 		this.setState({
 			text: '',
+			toHome: id ? false : true,
 		})
 	}
 	render() {
-		const {text} = this.state
+		const { text, toHome } = this.state
 		const maxLength = 280
 		{/*Redirect to / if submitted*/}
 		const tweetLeft = maxLength - text.length
+		if (toHome === true) {
+			return <Redirect to='/' />
+		}
 		return (
 			<div>
 				<h3 className="center">Compose new Tweet</h3>
